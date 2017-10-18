@@ -34,7 +34,7 @@ import io.swagger.annotations.ApiResponses;
  * JAX-RS API endpoint.
  */
 @ApiDefinition(docsPath = "/api/docs", title = "Example API", version = "v1", prettyPrint = true)
-@Api
+@Api("Test API")
 @Component
 @Path("/api")
 public class ApiEndpoint {
