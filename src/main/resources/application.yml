@@ -1,0 +1,10 @@
+spring:
+  jersey:
+    type: filter
+    
+holon:
+  jersey:
+    forwardOn404: true
+    
+server:
+  port: 9999
