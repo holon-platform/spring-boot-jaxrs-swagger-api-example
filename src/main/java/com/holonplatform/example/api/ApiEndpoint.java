@@ -43,7 +43,7 @@ public class ApiEndpoint {
 	@ApiResponses({ @ApiResponse(code = 200, message = "OK: pong", response = String.class) })
 	@GET
 	@Path("/ping")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response ping() {
 		return Response.ok("pong").build();
 	}
