@@ -15,6 +15,8 @@
  */
 package com.holonplatform.example.test;
 
+import java.util.UUID;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +25,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.holonplatform.auth.Authentication;
 import com.holonplatform.auth.jwt.JwtConfiguration;
+import com.holonplatform.auth.jwt.JwtTokenBuilder;
+import com.holonplatform.example.data.UserDetails;
 import com.holonplatform.http.HttpHeaders;
 import com.holonplatform.http.HttpStatus;
 import com.holonplatform.http.rest.ResponseEntity;
@@ -35,10 +40,10 @@ import com.holonplatform.http.rest.RestClient;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 public class ApiTest {
-	
+
 	@Autowired
 	private JwtConfiguration jwtConfiguration;
-	
+
 	@Test
 	public void testJwtConfiguration() {
 		Assert.assertEquals("example-issuer", jwtConfiguration.getIssuer());
@@ -46,13 +51,81 @@ public class ApiTest {
 	}
 
 	@Test
-	public void testPing() {
+	public void testUnauthorized() {
 
 		ResponseEntity<String> response = RestClient.forTarget("http://localhost:9999/api").request().path("ping")
 				.get(String.class);
 
+		Assert.assertEquals(HttpStatus.UNAUTHORIZED, response.getStatus());
+		// Assert.assertEquals("pong", response.as(String.class).orElse(null));
+	}
+
+	@Test
+	public void testAuth() {
+
+		// build an Authentication
+		Authentication authc = Authentication.builder("testUser").build();
+
+		// build a jwt token from Authentication
+		String jwtToken = JwtTokenBuilder.buildJwtToken(jwtConfiguration, authc, UUID.randomUUID().toString());
+
+		ResponseEntity<String> response = RestClient.forTarget("http://localhost:9999/api").request().path("ping")
+				// set the JWT token as Authorization Bearer header value
+				.authorizationBearer(jwtToken)
+				//
+				.get(String.class);
+
 		Assert.assertEquals(HttpStatus.OK, response.getStatus());
 		Assert.assertEquals("pong", response.as(String.class).orElse(null));
+
+		// test role based authorization
+		response = RestClient.forTarget("http://localhost:9999/api").request().path("protected")
+				.authorizationBearer(jwtToken).get(String.class);
+		Assert.assertEquals(HttpStatus.FORBIDDEN, response.getStatus());
+
+		// Use an authentication with ROLE1
+		authc = Authentication.builder("testUser").permission("ROLE1").build();
+		jwtToken = JwtTokenBuilder.buildJwtToken(jwtConfiguration, authc, UUID.randomUUID().toString());
+
+		response = RestClient.forTarget("http://localhost:9999/api").request().path("protected")
+				.authorizationBearer(jwtToken).get(String.class);
+		Assert.assertEquals(HttpStatus.OK, response.getStatus());
+
+		// get user name
+		authc = Authentication.builder("testUser").permission("ROLE1").permission("ROLE2").build();
+		jwtToken = JwtTokenBuilder.buildJwtToken(jwtConfiguration, authc, UUID.randomUUID().toString());
+
+		response = RestClient.forTarget("http://localhost:9999/api").request().path("user")
+				.authorizationBearer(jwtToken).get(String.class);
+		Assert.assertEquals(HttpStatus.OK, response.getStatus());
+		Assert.assertEquals("testUser", response.as(String.class).orElse(null));
+	}
+
+	@Test
+	public void testAuthenticationInfo() {
+
+		Authentication authc = Authentication.builder("testUser")
+				// permissions
+				.permission("ROLE1").permission("ROLE2")
+				// user details
+				.parameter("firstName", "Test").parameter("lastName", "User")
+				.parameter("email", "test@holon-platform.com")
+				//
+				.build();
+		String jwtToken = JwtTokenBuilder.buildJwtToken(jwtConfiguration, authc, UUID.randomUUID().toString());
+
+		ResponseEntity<UserDetails> response = RestClient.forTarget("http://localhost:9999/api").request()
+				.path("details").authorizationBearer(jwtToken).get(UserDetails.class);
+
+		UserDetails userDetails = response.getPayload().orElse(null);
+
+		Assert.assertNotNull(userDetails);
+		Assert.assertEquals("testUser", userDetails.getUserId());
+		Assert.assertTrue(userDetails.isRole1());
+		Assert.assertEquals("Test", userDetails.getFirstName());
+		Assert.assertEquals("User", userDetails.getLastName());
+		Assert.assertEquals("test@holon-platform.com", userDetails.getEmail());
+
 	}
 
 	@Test
