@@ -54,7 +54,7 @@ public class ApiEndpoint {
 	@ApiResponses({ @ApiResponse(code = 200, message = "OK: pong", response = String.class) })
 	@GET
 	@Path("/ping")
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
 	public Response ping() {
 		return Response.ok("pong").build();
 	}
@@ -64,7 +64,7 @@ public class ApiEndpoint {
 	@ApiResponses({ @ApiResponse(code = 200, message = "OK", response = String.class) })
 	@GET
 	@Path("/protected")
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
 	public Response protectedOperation() {
 		return Response.ok("protected").build();
 	}
