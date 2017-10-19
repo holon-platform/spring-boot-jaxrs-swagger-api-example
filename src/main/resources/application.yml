@@ -6,5 +6,10 @@ holon:
   jersey:
     forwardOn404: true
     
+  jwt:
+    signature-algorithm: HS256
+    sharedkey-base64: eWGZLlCrUjtBZwxgzcLPnA
+    issuer: example-issuer
+    
 server:
   port: 9999

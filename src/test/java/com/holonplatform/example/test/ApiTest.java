@@ -18,10 +18,12 @@ package com.holonplatform.example.test;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.holonplatform.auth.jwt.JwtConfiguration;
 import com.holonplatform.http.HttpHeaders;
 import com.holonplatform.http.HttpStatus;
 import com.holonplatform.http.rest.ResponseEntity;
@@ -33,6 +35,15 @@ import com.holonplatform.http.rest.RestClient;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 public class ApiTest {
+	
+	@Autowired
+	private JwtConfiguration jwtConfiguration;
+	
+	@Test
+	public void testJwtConfiguration() {
+		Assert.assertEquals("example-issuer", jwtConfiguration.getIssuer());
+		Assert.assertEquals("HS256", jwtConfiguration.getSignatureAlgorithm());
+	}
 
 	@Test
 	public void testPing() {

@@ -60,10 +60,16 @@
 			<groupId>com.holon-platform.jaxrs</groupId>
 			<artifactId>holon-starter-jersey</artifactId>
 		</dependency>
-		<!-- Swagger support -->
+		<!-- Holon Swagger support -->
 		<dependency>
 			<groupId>com.holon-platform.jaxrs</groupId>
 			<artifactId>holon-jaxrs-swagger</artifactId>
+		</dependency>
+		
+		<!-- Holon JWT support -->
+		<dependency>
+			<groupId>com.holon-platform.core</groupId>
+			<artifactId>holon-auth-jwt</artifactId>
 		</dependency>
 
 		<!-- Actuator and webmvc -->
