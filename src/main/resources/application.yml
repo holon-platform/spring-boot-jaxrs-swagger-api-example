@@ -9,6 +9,7 @@ holon:
   jwt:
     signature-algorithm: HS256
     sharedkey-base64: eWGZLlCrUjtBZwxgzcLPnA
+    expire-hours: 1
     issuer: example-issuer
     
 server:

@@ -45,12 +45,6 @@ public class ApiTest {
 	private JwtConfiguration jwtConfiguration;
 
 	@Test
-	public void testJwtConfiguration() {
-		Assert.assertEquals("example-issuer", jwtConfiguration.getIssuer());
-		Assert.assertEquals("HS256", jwtConfiguration.getSignatureAlgorithm());
-	}
-
-	@Test
 	public void testUnauthorized() {
 
 		ResponseEntity<String> response = RestClient.forTarget("http://localhost:9999/api").request().path("ping")
