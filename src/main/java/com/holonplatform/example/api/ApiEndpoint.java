@@ -38,10 +38,20 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
+import io.swagger.annotations.AuthorizationScope;
+import io.swagger.annotations.OAuth2Definition;
+import io.swagger.annotations.OAuth2Definition.Flow;
+import io.swagger.annotations.Scope;
+import io.swagger.annotations.SecurityDefinition;
+import io.swagger.annotations.SwaggerDefinition;
 
 @Authenticate // require authentication
 @ApiDefinition(docsPath = "/api/docs", title = "Example API", version = "v1", prettyPrint = true)
-@Api("Test API")
+@SwaggerDefinition(securityDefinition = @SecurityDefinition(oAuth2Definitions = @OAuth2Definition(key = "jwt-auth", description = "JWT Bearer token", flow = Flow.IMPLICIT, authorizationUrl = "https://example.org/api/oauth2", scopes = {
+		@Scope(name = "ROLE1", description = "Test role 1"),
+		@Scope(name = "ROLE2", description = "Test role 2") })))
+@Api(value = "Test API", authorizations = @Authorization("jwt-auth"))
 @Component
 @Path("/api")
 public class ApiEndpoint {
@@ -60,7 +70,7 @@ public class ApiEndpoint {
 	}
 
 	@RolesAllowed("ROLE1") // ROLE1 is required
-	@ApiOperation("Get protected resource")
+	@ApiOperation(value = "Get protected resource", authorizations = @Authorization(value = "jwt-auth", scopes = @AuthorizationScope(scope = "ROLE1", description = "")))
 	@ApiResponses({ @ApiResponse(code = 200, message = "OK", response = String.class) })
 	@GET
 	@Path("/protected")
@@ -70,7 +80,7 @@ public class ApiEndpoint {
 	}
 
 	@RolesAllowed("ROLE2") // ROLE2 is required
-	@ApiOperation("Get user name")
+	@ApiOperation(value = "Get user name", authorizations = @Authorization(value = "jwt-auth", scopes = @AuthorizationScope(scope = "ROLE2", description = "")))
 	@ApiResponses({ @ApiResponse(code = 200, message = "OK", response = String.class) })
 	@GET
 	@Path("/user")
@@ -84,8 +94,8 @@ public class ApiEndpoint {
 	}
 
 	@RolesAllowed("ROLE2") // ROLE2 is required
-	@ApiOperation("Get user details")
-	@ApiResponses({ @ApiResponse(code = 200, message = "OK", response = String.class) })
+	@ApiOperation(value = "Get user details", authorizations = @Authorization(value = "jwt-auth", scopes = @AuthorizationScope(scope = "ROLE2", description = "")))
+	@ApiResponses({ @ApiResponse(code = 200, message = "OK", response = UserDetails.class) })
 	@GET
 	@Path("/details")
 	@Produces(MediaType.APPLICATION_JSON)
