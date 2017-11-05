@@ -1,7 +1,5 @@
 package com.holonplatform.example.api;
 
-import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -44,7 +42,6 @@ public class ApiEndpoint {
 	@Inject
 	private Realm realm;
 
-	@PermitAll // no specific role required
 	@ApiOperation("Ping request")
 	@ApiResponses({ @ApiResponse(code = 200, message = "OK: pong", response = String.class) })
 	@GET
@@ -54,7 +51,6 @@ public class ApiEndpoint {
 		return Response.ok("pong").build();
 	}
 
-	@RolesAllowed("ROLE1") // ROLE1 is required
 	@ApiOperation(value = "Get protected resource", authorizations = @Authorization(value = "jwt-auth", scopes = @AuthorizationScope(scope = "ROLE1", description = "")))
 	@ApiResponses({ @ApiResponse(code = 200, message = "OK", response = String.class) })
 	@GET
@@ -64,7 +60,6 @@ public class ApiEndpoint {
 		return Response.ok("protected").build();
 	}
 
-	@RolesAllowed("ROLE2") // ROLE2 is required
 	@ApiOperation(value = "Get user name", authorizations = @Authorization(value = "jwt-auth", scopes = @AuthorizationScope(scope = "ROLE2", description = "")))
 	@ApiResponses({ @ApiResponse(code = 200, message = "OK", response = String.class) })
 	@GET
@@ -78,7 +73,6 @@ public class ApiEndpoint {
 		return Response.ok(principalName).build();
 	}
 
-	@RolesAllowed("ROLE2") // ROLE2 is required
 	@ApiOperation(value = "Get user details", authorizations = @Authorization(value = "jwt-auth", scopes = @AuthorizationScope(scope = "ROLE2", description = "")))
 	@ApiResponses({ @ApiResponse(code = 200, message = "OK", response = UserDetails.class) })
 	@GET

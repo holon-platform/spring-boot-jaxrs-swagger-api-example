@@ -14,3 +14,10 @@ holon:
     
 server:
   port: 9999
+  
+example:
+  authz:
+    paths:
+      /api/protected: "ROLE1"
+      /api/user: "ROLE2"
+      /api/details: "ROLE2"
