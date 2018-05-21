@@ -61,7 +61,7 @@ public class ApiTest {
 		Authentication authc = Authentication.builder("testUser").build();
 
 		// build a jwt token from Authentication
-		String jwtToken = JwtTokenBuilder.buildJwtToken(jwtConfiguration, authc, UUID.randomUUID().toString());
+		String jwtToken = JwtTokenBuilder.get().buildJwt(jwtConfiguration, authc, UUID.randomUUID().toString());
 
 		ResponseEntity<String> response = RestClient.forTarget("http://localhost:9999/api").request().path("ping")
 				// set the JWT token as Authorization Bearer header value
@@ -79,7 +79,7 @@ public class ApiTest {
 
 		// Use an authentication with ROLE1
 		authc = Authentication.builder("testUser").permission("ROLE1").build();
-		jwtToken = JwtTokenBuilder.buildJwtToken(jwtConfiguration, authc, UUID.randomUUID().toString());
+		jwtToken = JwtTokenBuilder.get().buildJwt(jwtConfiguration, authc, UUID.randomUUID().toString());
 
 		response = RestClient.forTarget("http://localhost:9999/api").request().path("protected")
 				.authorizationBearer(jwtToken).get(String.class);
@@ -87,7 +87,7 @@ public class ApiTest {
 
 		// get user name
 		authc = Authentication.builder("testUser").permission("ROLE1").permission("ROLE2").build();
-		jwtToken = JwtTokenBuilder.buildJwtToken(jwtConfiguration, authc, UUID.randomUUID().toString());
+		jwtToken = JwtTokenBuilder.get().buildJwt(jwtConfiguration, authc, UUID.randomUUID().toString());
 
 		response = RestClient.forTarget("http://localhost:9999/api").request().path("user")
 				.authorizationBearer(jwtToken).get(String.class);
@@ -106,7 +106,7 @@ public class ApiTest {
 				.parameter("email", "test@holon-platform.com")
 				//
 				.build();
-		String jwtToken = JwtTokenBuilder.buildJwtToken(jwtConfiguration, authc, UUID.randomUUID().toString());
+		String jwtToken = JwtTokenBuilder.get().buildJwt(jwtConfiguration, authc, UUID.randomUUID().toString());
 
 		ResponseEntity<UserDetails> response = RestClient.forTarget("http://localhost:9999/api").request()
 				.path("details").authorizationBearer(jwtToken).get(UserDetails.class);

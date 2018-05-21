@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
@@ -37,7 +38,7 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 
-		<holon.platform.version>5.0.3</holon.platform.version>
+		<holon.platform.version>5.1.2</holon.platform.version>
 	</properties>
 
 	<dependencyManagement>
@@ -65,7 +66,7 @@
 			<groupId>com.holon-platform.jaxrs</groupId>
 			<artifactId>holon-jaxrs-swagger</artifactId>
 		</dependency>
-		
+
 		<!-- Holon JWT support -->
 		<dependency>
 			<groupId>com.holon-platform.core</groupId>
@@ -76,12 +77,12 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>4.3.11.RELEASE</version>
+			<version>4.3.17.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
-			<version>1.5.8.RELEASE</version>
+			<version>1.5.13.RELEASE</version>
 		</dependency>
 
 		<!-- Test -->
@@ -99,7 +100,7 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>1.5.8.RELEASE</version>
+				<version>1.5.13.RELEASE</version>
 				<executions>
 					<execution>
 						<goals>
