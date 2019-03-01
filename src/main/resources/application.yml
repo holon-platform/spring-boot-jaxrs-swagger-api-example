@@ -2,6 +2,11 @@ spring:
   jersey:
     type: filter
     
+management:
+  endpoints:
+    web:
+      base-path: /
+    
 holon:
   jersey:
     forwardOn404: true
