@@ -37,10 +37,10 @@ public class Application {
 	public Realm realm(JwtConfiguration jwtConfiguration) {
 		return Realm.builder()
 				// HTTP Bearer authorization schema resolver
-				.resolver(AuthenticationToken.httpBearerResolver())
+				.withResolver(AuthenticationToken.httpBearerResolver())
 				// authenticator using the provided JwtConfiguration, automatically created by Holon using the
 				// holon.jwt.* configuration properties
-				.authenticator(JwtAuthenticator.builder().configuration(jwtConfiguration).build())
+				.withAuthenticator(JwtAuthenticator.builder().configuration(jwtConfiguration).build())
 				// default authorizer
 				.withDefaultAuthorizer().build();
 	}

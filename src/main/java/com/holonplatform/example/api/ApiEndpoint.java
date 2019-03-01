@@ -32,26 +32,18 @@ import com.holonplatform.auth.Authentication;
 import com.holonplatform.auth.Realm;
 import com.holonplatform.auth.annotations.Authenticate;
 import com.holonplatform.example.data.UserDetails;
-import com.holonplatform.jaxrs.swagger.annotations.ApiDefinition;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.Authorization;
-import io.swagger.annotations.AuthorizationScope;
-import io.swagger.annotations.OAuth2Definition;
-import io.swagger.annotations.OAuth2Definition.Flow;
-import io.swagger.annotations.Scope;
-import io.swagger.annotations.SecurityDefinition;
-import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @Authenticate // require authentication
-@ApiDefinition(docsPath = "/api/docs", title = "Example API", version = "v1", prettyPrint = true)
-@SwaggerDefinition(securityDefinition = @SecurityDefinition(oAuth2Definitions = @OAuth2Definition(key = "jwt-auth", description = "JWT Bearer token", flow = Flow.IMPLICIT, authorizationUrl = "https://example.org/api/oauth2", scopes = {
-		@Scope(name = "ROLE1", description = "Test role 1"),
-		@Scope(name = "ROLE2", description = "Test role 2") })))
-@Api(value = "Test API", authorizations = @Authorization("jwt-auth"))
+@OpenAPIDefinition(info = @Info(title = "Test API", version = "v1"))
 @Component
 @Path("/api")
 public class ApiEndpoint {
@@ -60,8 +52,9 @@ public class ApiEndpoint {
 	private Realm realm;
 
 	@PermitAll // no specific role required
-	@ApiOperation("Ping request")
-	@ApiResponses({ @ApiResponse(code = 200, message = "OK: pong", response = String.class) })
+	@Operation(summary = "Ping request")
+	@ApiResponses({
+			@ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = MediaType.TEXT_PLAIN)) })
 	@GET
 	@Path("/ping")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -70,8 +63,10 @@ public class ApiEndpoint {
 	}
 
 	@RolesAllowed("ROLE1") // ROLE1 is required
-	@ApiOperation(value = "Get protected resource", authorizations = @Authorization(value = "jwt-auth", scopes = @AuthorizationScope(scope = "ROLE1", description = "")))
-	@ApiResponses({ @ApiResponse(code = 200, message = "OK", response = String.class) })
+	@Operation(summary = "Get protected resource")
+	@SecurityRequirement(name = "jwt-auth", scopes = "ROLE1")
+	@ApiResponses({
+			@ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = MediaType.TEXT_PLAIN)) })
 	@GET
 	@Path("/protected")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -80,8 +75,10 @@ public class ApiEndpoint {
 	}
 
 	@RolesAllowed("ROLE2") // ROLE2 is required
-	@ApiOperation(value = "Get user name", authorizations = @Authorization(value = "jwt-auth", scopes = @AuthorizationScope(scope = "ROLE2", description = "")))
-	@ApiResponses({ @ApiResponse(code = 200, message = "OK", response = String.class) })
+	@Operation(summary = "Get user name")
+	@SecurityRequirement(name = "jwt-auth", scopes = "ROLE2")
+	@ApiResponses({
+			@ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = MediaType.TEXT_PLAIN)) })
 	@GET
 	@Path("/user")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -94,8 +91,10 @@ public class ApiEndpoint {
 	}
 
 	@RolesAllowed("ROLE2") // ROLE2 is required
-	@ApiOperation(value = "Get user details", authorizations = @Authorization(value = "jwt-auth", scopes = @AuthorizationScope(scope = "ROLE2", description = "")))
-	@ApiResponses({ @ApiResponse(code = 200, message = "OK", response = UserDetails.class) })
+	@Operation(summary = "Get user details")
+	@SecurityRequirement(name = "jwt-auth", scopes = "ROLE2")
+	@ApiResponses({
+			@ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = UserDetails.class))) })
 	@GET
 	@Path("/details")
 	@Produces(MediaType.APPLICATION_JSON)

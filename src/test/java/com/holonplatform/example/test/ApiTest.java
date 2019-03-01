@@ -78,7 +78,7 @@ public class ApiTest {
 		Assert.assertEquals(HttpStatus.FORBIDDEN, response.getStatus());
 
 		// Use an authentication with ROLE1
-		authc = Authentication.builder("testUser").permission("ROLE1").build();
+		authc = Authentication.builder("testUser").withPermission("ROLE1").build();
 		jwtToken = JwtTokenBuilder.get().buildJwt(jwtConfiguration, authc, UUID.randomUUID().toString());
 
 		response = RestClient.forTarget("http://localhost:9999/api").request().path("protected")
@@ -86,7 +86,7 @@ public class ApiTest {
 		Assert.assertEquals(HttpStatus.OK, response.getStatus());
 
 		// get user name
-		authc = Authentication.builder("testUser").permission("ROLE1").permission("ROLE2").build();
+		authc = Authentication.builder("testUser").withPermission("ROLE1").withPermission("ROLE2").build();
 		jwtToken = JwtTokenBuilder.get().buildJwt(jwtConfiguration, authc, UUID.randomUUID().toString());
 
 		response = RestClient.forTarget("http://localhost:9999/api").request().path("user")
@@ -100,10 +100,10 @@ public class ApiTest {
 
 		Authentication authc = Authentication.builder("testUser")
 				// permissions
-				.permission("ROLE1").permission("ROLE2")
+				.withPermission("ROLE1").withPermission("ROLE2")
 				// user details
-				.parameter("firstName", "Test").parameter("lastName", "User")
-				.parameter("email", "test@holon-platform.com")
+				.withParameter("firstName", "Test").withParameter("lastName", "User")
+				.withParameter("email", "test@holon-platform.com")
 				//
 				.build();
 		String jwtToken = JwtTokenBuilder.get().buildJwt(jwtConfiguration, authc, UUID.randomUUID().toString());

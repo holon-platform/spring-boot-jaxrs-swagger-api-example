@@ -2,13 +2,21 @@ spring:
   jersey:
     type: filter
     
+management:
+  endpoints:
+    web:
+      base-path: /
+    
 holon:
   jersey:
     forwardOn404: true
     
+  swagger:
+    path: "/api/docs"
+    
   jwt:
     signature-algorithm: HS256
-    sharedkey-base64: eWGZLlCrUjtBZwxgzcLPnA
+    sharedkey-base64: X7Cukx67arP4UQSjPBC8zEkpht8hc4FZZwiIJIz2Fr0=
     expire-hours: 1
     issuer: example-issuer
     
