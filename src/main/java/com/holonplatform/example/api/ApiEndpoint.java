@@ -23,8 +23,6 @@ import javax.ws.rs.core.Response;
 
 import org.springframework.stereotype.Component;
 
-import com.holonplatform.jaxrs.swagger.annotations.ApiDefinition;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -33,7 +31,6 @@ import io.swagger.annotations.ApiResponses;
 /**
  * JAX-RS API endpoint.
  */
-@ApiDefinition(docsPath = "/api/docs", title = "Example API", version = "v1", prettyPrint = true)
 @Api("Test API")
 @Component
 @Path("/api")

@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
@@ -37,7 +38,9 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 
-		<holon.platform.version>5.1.2</holon.platform.version>
+		<spring.boot.version>2.1.3.RELEASE</spring.boot.version>
+
+		<holon.platform.version>5.2.2</holon.platform.version>
 	</properties>
 
 	<dependencyManagement>
@@ -60,22 +63,23 @@
 			<groupId>com.holon-platform.jaxrs</groupId>
 			<artifactId>holon-starter-jersey</artifactId>
 		</dependency>
-		<!-- Swagger support -->
+
+		<!-- Swagger V3 -->
 		<dependency>
 			<groupId>com.holon-platform.jaxrs</groupId>
-			<artifactId>holon-jaxrs-swagger</artifactId>
+			<artifactId>holon-jaxrs-swagger-v2</artifactId>
 		</dependency>
 
-		<!-- Actuator and webmvc -->
+		<!-- Actuator -->
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-			<version>4.3.17.RELEASE</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<version>${spring.boot.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
-			<version>1.5.13.RELEASE</version>
+			<version>${spring.boot.version}</version>
 		</dependency>
 
 		<!-- Test -->
@@ -83,6 +87,11 @@
 			<groupId>com.holon-platform.core</groupId>
 			<artifactId>holon-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
 		</dependency>
 
 	</dependencies>
@@ -93,7 +102,7 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>1.5.13.RELEASE</version>
+				<version>${spring.boot.version}</version>
 				<executions>
 					<execution>
 						<goals>

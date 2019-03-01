@@ -64,7 +64,7 @@ public class ApiTest {
 
 	@Test
 	public void testActuator() {
-		ResponseEntity<String> response = RestClient.forTarget("http://localhost:9999/info").request()
+		ResponseEntity<String> response = RestClient.forTarget("http://localhost:9999/actuator/info").request()
 				.get(String.class);
 		Assert.assertEquals(HttpStatus.OK, response.getStatus());
 	}
