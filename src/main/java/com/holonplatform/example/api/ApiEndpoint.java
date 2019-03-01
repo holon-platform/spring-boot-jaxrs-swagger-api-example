@@ -23,21 +23,21 @@ import javax.ws.rs.core.Response;
 
 import org.springframework.stereotype.Component;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 /**
  * JAX-RS API endpoint.
  */
-@Api("Test API")
 @Component
 @Path("/api")
 public class ApiEndpoint {
 
-	@ApiOperation("Ping request")
-	@ApiResponses({ @ApiResponse(code = 200, message = "OK: pong", response = String.class) })
+	@Operation(summary = "Ping request")
+	@ApiResponses({
+			@ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = MediaType.TEXT_PLAIN)) })
 	@GET
 	@Path("/ping")
 	@Produces(MediaType.APPLICATION_JSON)

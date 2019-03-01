@@ -67,7 +67,7 @@
 		<!-- Swagger V3 -->
 		<dependency>
 			<groupId>com.holon-platform.jaxrs</groupId>
-			<artifactId>holon-jaxrs-swagger-v2</artifactId>
+			<artifactId>holon-jaxrs-swagger-v3</artifactId>
 		</dependency>
 
 		<!-- Actuator -->
